@@ -1,0 +1,25 @@
+<!-- inventory/templates/inventory/add_sale.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}New Sale - KGL{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Record New Sale</h2>
+                <form method="post" id="saleForm">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Record Sale</button>
+                        <a href="{% url 'all_sales' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

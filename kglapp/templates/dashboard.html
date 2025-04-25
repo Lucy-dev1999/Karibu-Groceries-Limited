@@ -1,0 +1,39 @@
+<!-- inventory/templates/inventory/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - KGL{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Stock Management</h5>
+                <p class="card-text">Manage your inventory and stock levels</p>
+                <a href="{% url 'add_stock' %}" class="btn btn-primary">Add Stock</a>
+                <a href="{% url 'all_stock' %}" class="btn btn-outline-primary">View Stock</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Sales</h5>
+                <p class="card-text">Record and view sales transactions</p>
+                <a href="{% url 'add_sale' %}" class="btn btn-primary">New Sale</a>
+                <a href="{% url 'all_sales' %}" class="btn btn-outline-primary">View Sales</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Credits</h5>
+                <p class="card-text">Manage credit transactions</p>
+                <a href="{% url 'add_credit' %}" class="btn btn-primary">Add Credit</a>
+                <a href="{% url 'all_credits' %}" class="btn btn-outline-primary">View Credits</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
