@@ -1,4 +1,3 @@
-<!-- inventory/templates/inventory/add_credit.html -->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
@@ -9,10 +8,25 @@
     <div class="col-md-8">
         <div class="card shadow">
             <div class="card-body">
-                <h2 class="card-title mb-4">Record New Credit</h2>
+                <h2 class="card-title mb-4">Add New Credit</h2>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form|crispy }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.buyers_name|as_crispy_field }}
+                            {{ form.national_id|as_crispy_field }}
+                            {{ form.location|as_crispy_field }}
+                            {{ form.contacts|as_crispy_field }}
+                            {{ form.amount_due|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.sales_agent|as_crispy_field }}
+                            {{ form.due_date|as_crispy_field }}
+                            {{ form.produce_name|as_crispy_field }}
+                            {{ form.produce_type|as_crispy_field }}
+                            {{ form.tonnage|as_crispy_field }}
+                        </div>
+                    </div>
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Save Credit</button>
                         <a href="{% url 'all_credits' %}" class="btn btn-outline-secondary">Cancel</a>

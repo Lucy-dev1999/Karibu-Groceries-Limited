@@ -1,45 +1,207 @@
-{% load django_bootstrap5 %}
-{% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}KGL{% endblock %}</title>
+    <title>{% block title %}KGL STORE{% endblock %}</title>
+    {% load django_bootstrap5 %}
+    {% load crispy_forms_tags %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --maroon: #800000;
+            --cream: #FFFDD0;
+            --dark-gray: #333333;
+            --black: #000000;
+            --white: #FFFFFF;
+        }
+
+        html {
+            overflow: hidden;
+            height: 100%;
+        }
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            background-color: var(--cream);
+            color: var(--black);
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--maroon) !important;
+        }
+        .main-content {
+            padding-top: 80px;
+            padding-bottom: 100px;
+            min-height: calc(100vh - 60px);
+            background-color: var(--cream);
+            color: var(--black);
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--dark-gray) !important;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        .card {
+            border-color: var(--dark-gray);
+            background-color: var(--white);
+            color: var(--black);
+        }
+        .card-header {
+            background-color: var(--maroon) !important;
+            color: var(--white);
+        }
+        .btn-primary {
+            background-color: var(--black) !important;
+            border-color: var(--black) !important;
+            color: var(--white) !important;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: var(--dark-gray) !important;
+            border-color: var(--black) !important;
+        }
+        .btn-outline-primary {
+            color: var(--black) !important;
+            border-color: var(--black) !important;
+        }
+        .btn-outline-primary:hover {
+            color: var(--white) !important;
+            background-color: var(--black) !important;
+        }
+        .btn-dark {
+            background-color: var(--dark-gray) !important;
+            border-color: var(--black) !important;
+            color: var(--white) !important;
+        }
+        .btn-dark:hover {
+            background-color: var(--black) !important;
+        }
+        .navbar-brand.btn-dark {
+            background-color: var(--black) !important;
+        }
+        .navbar-brand.btn-dark:hover {
+            background-color: var(--dark-gray) !important;
+        }
+        .table {
+            color: var(--black) !important;
+            background-color: var(--white) !important;
+        }
+        .table-dark {
+            background-color: var(--dark-gray) !important;
+        }
+        .table-hover tbody tr:hover {
+            background-color: var(--white) !important;
+            color: var(--white) !important;
+        }
+
+        .alert {
+            background-color: var(--dark-gray);
+            border-color: var(--black);
+            color: var(--white);
+        }
+        .form-control, .form-select {
+            background-color: var(--black);
+            border-color: var(--white);
+            color: var(--black);
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: var(--white);
+            border-color: var(--black);
+            color: var(--black);
+            box-shadow: 0 0 0 0.25rem rgba(51, 51, 51, 0.25);
+        }
+        .form-control::placeholder {
+            color: var(--dark-gray);
+        }
+        label {
+            color: var(--black);
+        }
+        .bg-primary {
+            background-color: var(--maroon) !important;
+        }
+        .bg-success {
+            background-color: var(--dark-gray) !important;
+        }
+        .bg-dark {
+            background-color: var(--dark-gray) !important;
+        }
+        .btn-outline-light:hover {
+            color: var(--black) !important;
+        }
+        .navbar-dark .navbar-nav .nav-link,
+        .navbar-text {
+            color: var(--white) !important;
+        }
+        .navbar-dark .navbar-brand {
+            color: var(--white) !important;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'dashboard' %}">KGL</a>
+            <a class="navbar-brand btn btn-dark" href="{% url 'dashboard' %}">KGL STORE</a>
+            {% if user.is_authenticated %}
+                {% if user.role == 'director' %}
+                    <div class="btn-group ms-3">
+                        <a href="{% url 'dashboard' %}?branch=Mattuga" class="btn {% if user_branch == 'Mattuga' %}btn-primary{% else %}btn-outline-light{% endif %}">Mattuga</a>
+                        <a href="{% url 'dashboard' %}?branch=Maganjo" class="btn {% if user_branch == 'Maganjo' %}btn-success{% else %}btn-outline-light{% endif %}">Maganjo</a>
+                    </div>
+                {% elif user.role != 'sales_agent' %}
+                    <span class="navbar-text text-white ms-3">
+                        Branch: {% firstof user_branch request.user.branch %}
+                    </span>
+                {% endif %}
+            {% endif %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_stock' %}">Stock</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_sales' %}">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_credits' %}">Credits</a>
-                    </li>
+                <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-dark ms-2">Logout</button>
+                            </form>
+                        </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        {% bootstrap_messages %}
-        {% block content %}
-        {% endblock %}
+    <div class="main-content">
+        <div class="container">
+            <div class="mb-3">
+                <button onclick="history.back()" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+            {% bootstrap_messages %}
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
+
+    <footer class="footer py-3 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">Developed and created by Ainembabazi Lucia Rachel</p>
+            <p class="mb-0">&copy; {% now "Y" %} LUCIA. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<!-- Stock Management -->
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">Stock Management</h5>
+            <div class="d-grid gap-2">
+                <a href="{% url 'all_stock' %}?branch={{ branch }}" class="btn btn-outline-primary">View Stock</a>
+                {% if user.role == 'manager' and user.branch == branch %}
+                    <a href="{% url 'add_stock' %}" class="btn btn-primary">Add Stock</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sales Management -->
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">Sales Management</h5>
+            <div class="d-grid gap-2">
+                <a href="{% url 'all_sales' %}?branch={{ branch }}" class="btn btn-outline-primary">View Sales</a>
+                {% if user.role == 'manager' and user.branch == branch %}
+                    <a href="{% url 'add_sale' %}" class="btn btn-primary">Add Sale</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Credit Management -->
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">Credit Management</h5>
+            <div class="d-grid gap-2">
+                <a href="{% url 'all_credits' %}?branch={{ branch }}" class="btn btn-outline-primary">View Credits</a>
+                {% if user.role == 'manager' and user.branch == branch %}
+                    <a href="{% url 'add_credit' %}" class="btn btn-primary">Add Credit</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

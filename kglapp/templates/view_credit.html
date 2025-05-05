@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}View Credit - KGL{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Credit Details</h2>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Dispatch Date:</strong> {{ credit.dispatch_date }}</p>
+                        <p><strong>Due Date:</strong> {{ credit.due_date }}</p>
+                        <p><strong>Amount Due:</strong> {{ credit.amount_due }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Produce:</strong> {{ credit.produce_name }}</p>
+                        <p><strong>Type:</strong> {{ credit.produce_type }}</p>
+                        <p><strong>Tonnage:</strong> {{ credit.tonnage }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Buyer's Name:</strong> {{ credit.buyers_name }}</p>
+                        <p><strong>National ID:</strong> {{ credit.national_id }}</p>
+                        <p><strong>Location:</strong> {{ credit.location }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Contacts:</strong> {{ credit.contacts }}</p>
+                        <p><strong>Sales Agent ID:</strong> {{ credit.sales_agent.id }}</p>
+                        <p><strong>Sales Agent Name:</strong> {{ credit.sales_agent.get_full_name }}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'all_credits' %}" class="btn btn-outline-secondary">Back to Credits</a>
+                    <div class="d-flex gap-2">
+                        {% if user.role == 'manager' or user.role == 'sales_agent' %}
+                            <a href="{% url 'edit_credit' credit.id %}" class="btn btn-primary">Edit Credit</a>
+                            <a href="{% url 'delete_credit' credit.id %}" 
+                               class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this credit? This action cannot be undone.')">
+                                Delete Credit
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

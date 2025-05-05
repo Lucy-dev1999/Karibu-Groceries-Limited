@@ -1,4 +1,3 @@
-<!-- inventory/templates/inventory/all_sales.html -->
 {% extends 'base.html' %}
 
 {% block title %}All Sales - KGL{% endblock %}
@@ -7,21 +6,57 @@
 <div class="card shadow">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="card-title mb-0">Sales History</h2>
-            <a href="{% url 'add_sale' %}" class="btn btn-primary">New Sale</a>
+            <div>
+                <h2 class="card-title mb-0">Sales {% if current_branch %}- {{ current_branch }} Branch{% endif %}</h2>
+               <!-- {% if current_branch %}
+                <a href="{% url 'all_sales' %}" class="btn btn-sm btn-outline-secondary mt-2">View All Branches</a>
+                {% else %}
+                <div class="btn-group mt-2">
+                    <a href="{% url 'all_sales' %}?branch=Mattuga" class="btn btn-sm btn-outline-primary">Mattuga</a>
+                    <a href="{% url 'all_sales' %}?branch=Maganjo" class="btn btn-sm btn-outline-success">Maganjo</a>
+                </div>
+                {% endif %}-->
+            </div>
+            {% if user.role == 'manager' or user.role == 'sales_agent' %}
+                <a href="{% url 'add_sale' %}" class="btn btn-primary">New Sale</a>
+            {% endif %}
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Produce</th>
-                        <th>Tonnage</th>
-                        <th>Amount Paid</th>
-                        <th>Buyer's Name</th>
-                        <th>Sales Agent</th>
+                        <th>
+                            <a href="?{% if sort_by == 'date_of_sale' %}-{% endif %}sort=date_of_sale{% if current_branch %}&branch={{ current_branch }}{% endif %}" class="text-white text-decoration-none">
+                                Date
+                                {% if sort_by == 'date_of_sale' %}
+                                    <i class="bi bi-arrow-up"></i>
+                                {% elif sort_by == '-date_of_sale' %}
+                                    <i class="bi bi-arrow-down"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?{% if sort_by == 'name_of_produce' %}-{% endif %}sort=name_of_produce{% if current_branch %}&branch={{ current_branch }}{% endif %}" class="text-white text-decoration-none">
+                                Produce
+                                {% if sort_by == 'name_of_produce' %}
+                                    <i class="bi bi-arrow-up"></i>
+                                {% elif sort_by == '-name_of_produce' %}
+                                    <i class="bi bi-arrow-down"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?{% if sort_by == 'tonnage' %}-{% endif %}sort=tonnage{% if current_branch %}&branch={{ current_branch }}{% endif %}" class="text-white text-decoration-none">
+                                Tonnage(KGS)
+                                {% if sort_by == 'tonnage' %}
+                                    <i class="bi bi-arrow-up"></i>
+                                {% elif sort_by == '-tonnage' %}
+                                    <i class="bi bi-arrow-down"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>Sales Agent ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -29,15 +64,11 @@
                     {% for sale in sales %}
                     <tr>
                         <td>{{ sale.date_of_sale }}</td>
-                        <td>{{ sale.time_of_sale }}</td>
                         <td>{{ sale.name_of_produce }}</td>
                         <td>{{ sale.tonnage }}</td>
-                        <td>{{ sale.amount_paid }}</td>
-                        <td>{{ sale.buyers_name }}</td>
-                        <td>{{ sale.sales_agent_name }}</td>
+                        <td>{{ sale.sales_agent.id }}</td>
                         <td>
-                            <a href="{% url 'view_sale' sale.id %}" class="btn btn-sm btn-outline-info">View</a>
-                            <a href="{% url 'delete_sale' sale.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this sale?')">Delete</a>
+                            <a href="{% url 'view_sale' sale.id %}" class="btn btn-sm btn-outline-primary w-75 mb-1">View</a>
                         </td>
                     </tr>
                     {% empty %}

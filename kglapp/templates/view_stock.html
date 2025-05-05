@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}View Stock - KGL{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="mb-4">Stock Details</h2>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Branch:</strong> {{ stock.branch }}</p>
+                        <p><strong>Product Name:</strong> {{ stock.name_of_produce }}</p>
+                        <p><strong>Type of Produce:</strong> {{ stock.type_of_produce }}</p>
+                        <p><strong>Tonnage:</strong> {{ stock.tonnage }} kg</p>
+                        <p><strong>Cost (UGX per kg):</strong> {{ stock.cost }}</p>
+                        <p><strong>Selling Price (UGX):</strong> {{ stock.sell_price }}</p> 
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Date of Arrival:</strong> {{ stock.date_of_arrival }}</p>
+                        <p><strong>Time of Arrival:</strong> {{ stock.time_of_arrival }}</p>
+                        <p><strong>Dealer Name:</strong> {{ stock.name_of_dealer }}</p>
+                        <p><strong>Contact:</strong> {{ stock.contact }}</p>
+                        <p><strong>Stock Status:</strong> {{ stock.get_stock_status }}</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'all_stock' %}" class="btn btn-outline-secondary">Back to Stock</a>
+                    {% if user.role == 'manager' %}
+                        <a href="{% url 'add_sale' %}" class="btn btn-success">Sell item</a>
+                        <a href="{% url 'edit_stock' stock.id %}" class="btn btn-primary">Edit Stock</a>
+                        <a href="{% url 'delete_stock' stock.id %}" class="btn btn-danger" 
+                           onclick="return confirm('Are you sure you want to delete this stock item? This action cannot be undone.')">
+                            Delete Stock
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
