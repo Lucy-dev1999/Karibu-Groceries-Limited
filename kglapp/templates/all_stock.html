@@ -1,42 +1,69 @@
-<!-- inventory/templates/inventory/all_stock.html -->
 {% extends 'base.html' %}
 
 {% block title %}All Stock - KGL{% endblock %}
 
 {% block content %}
+{% if messages %}
+<div class="messages mb-4">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <div class="card shadow">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="card-title mb-0">Stock Inventory</h2>
-            <a href="{% url 'add_stock' %}" class="btn btn-primary">Add New Stock</a>
+            <div>
+                <h2 class="card-title mb-0">Stock {% if current_branch %}- {{ current_branch }} Branch{% endif %}</h2>
+                {% if user.role == 'director' %}
+                    {% if current_branch %}
+                    <a href="{% url 'all_stock' %}" class="btn btn-sm btn-outline-secondary mt-2">View All Branches</a>
+                    {% else %}
+                    <div class="btn-group mt-2">
+                        <a href="{% url 'all_stock' %}?branch=Mattuga" class="btn btn-sm btn-outline-primary">Mattuga</a>
+                        <a href="{% url 'all_stock' %}?branch=Maganjo" class="btn btn-sm btn-outline-success">Maganjo</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if user.role == 'manager' %}
+                <a href="{% url 'add_stock' %}" class="btn btn-primary">Add New Stock</a>
+            {% endif %}
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
-                        <th>Item Name</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total Value</th>
+                        <th>Name of Produce</th>
+                        {% if user.role == 'director' %}<th>Branch</th>{% endif %}
+                        <th>Type of Produce</th>                    
+                        <th>Tonnage(KGS)</th>
+                        <th>Cost(UGX per kg)</th>
+                        <th>Sell Price(UGX)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in stock_items %}
+                    {% for item in stocks %}
                     <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.unit_price }}</td>
-                        <td>{{ item.total_value }}</td>
+                        <td>{{ item.name_of_produce }}</td>
+                        {% if user.role == 'director' %}<td>{{ item.branch }}</td>{% endif %}
+                        <td>{{ item.type_of_produce }}</td>
+                        <td>{{ item.tonnage }}</td>               
+                        <td>{{ item.cost }}</td>
+                        <td>{{ item.sell_price }}</td>
                         <td>
-                            <a href="{% url 'edit_stock' item.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <a href="{% url 'delete_stock' item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-                        </td>
+                            <a href="{% url 'view_stock' item.id %}" class="btn btn-sm btn-outline-secondary w-75 mb-1">View</a>
+                        </td>      
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center">No stock items available</td>
+                        <td colspan="{% if user.role == 'director' %}7{% else %}6{% endif %}" class="text-center">No stock items available</td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -1,3 +1,95 @@
 django==5.1.7
 django==5.1.7
 django-bootstrap5==23.4
+"""{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}Director Dashboard - KGL{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Branch Statistics -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Mattuga Branch</h5>
+                    <h2 class="card-text display-4">
+                        {% with mattuga_total=branch_stats.Mattuga|default:"0.00" %}
+                            {{ mattuga_total|floatformat:2 }} KGS
+                        {% endwith %}
+                    </h2>
+                    <p class="card-text">Total Stock</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Maganjo Branch</h5>
+                    <h2 class="card-text display-4">
+                        {% with maganjo_total=branch_stats.Maganjo|default:"0.00" %}
+                            {{ maganjo_total|floatformat:2 }} KGS
+                        {% endwith %}
+                    </h2>
+                    <p class="card-text">Total Stock</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug info - will be hidden in production -->
+    <!--<div class="d-none">
+        <p>Debug - All branch stats: {{ branch_stats }}</p>
+        <p>Debug - Mattuga: {{ branch_stats.Mattuga }}</p>
+        <p>Debug - Maganjo: {{ branch_stats.Maganjo }}</p>
+    </div>-->
+
+    <!-- Branch Management Sections -->
+    {% for branch in branches %}
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>{{ branch }} Branch Management</h3>
+        </div>
+        <div class="row">
+            <!-- Stock Management -->
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Stock Management</h5>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'all_stock' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Stock</a>
+                            <a href="{% url 'add_stock' %}?branch={{ branch }}" class="btn btn-primary">Add New Stock</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sales Management -->
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Sales Management</h5>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'all_sales' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Sales</a>
+                            <a href="{% url 'add_sale' %}?branch={{ branch }}" class="btn btn-primary">Add New Sale</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Credit Management -->
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Credit Management</h5>
+                            <a href="{% url 'all_credits' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Credits</a>
+                            <a href="{% url 'add_credit' %}?branch={{ branch }}" class="btn btn-primary">Add New Credit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}"""
+

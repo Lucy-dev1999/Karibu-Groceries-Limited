@@ -1,4 +1,3 @@
-<!-- inventory/templates/inventory/all_credits.html -->
 {% extends 'base.html' %}
 
 {% block title %}All Credits - KGL{% endblock %}
@@ -7,25 +6,31 @@
 <div class="card shadow">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="card-title mb-0">Credit Records</h2>
-            <a href="{% url 'add_credit' %}" class="btn btn-primary">New Credit</a>
+            <div>
+                <h2 class="card-title mb-0">Credit {% if current_branch %}- {{ current_branch }} Branch{% endif %}</h2>
+                {% if current_branch %}
+                <a href="{% url 'all_credits' %}" class="btn btn-sm btn-outline-secondary mt-2">View All Branches</a>
+                {% else %}
+                <div class="btn-group mt-2">
+                    <a href="{% url 'all_credits' %}?branch=Mattuga" class="btn btn-sm btn-outline-primary">Mattuga</a>
+                    <a href="{% url 'all_credits' %}?branch=Maganjo" class="btn btn-sm btn-outline-success">Maganjo</a>
+                </div>
+                {% endif %}
+            </div>
+            {% if user.role == 'manager' or user.role == 'sales_agent' %}
+                <a href="{% url 'add_credit' %}" class="btn btn-primary">New Credit</a>
+            {% endif %}
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
                         <th>Dispatch Date</th>
-                        <th>Buyer's Name</th>
-                        <th>National ID</th>
-                        <th>Location</th>
-                        <th>Contact</th>
-                        <th>Amount Due</th>
-                        <th>Due Date</th>
                         <th>Produce</th>
                         <th>Type</th>
-                        <th>Tonnage</th>
-                        <th>Sales Agent</th>
+                        <th>Tonnage(KGS)</th>
+                        <th>Sales Agent ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -33,19 +38,12 @@
                     {% for credit in credits %}
                     <tr>
                         <td>{{ credit.dispatch_date }}</td>
-                        <td>{{ credit.buyers_name }}</td>
-                        <td>{{ credit.national_id }}</td>
-                        <td>{{ credit.location }}</td>
-                        <td>{{ credit.contacts }}</td>
-                        <td>{{ credit.amount_due }}</td>
-                        <td>{{ credit.due_date }}</td>
                         <td>{{ credit.produce_name }}</td>
                         <td>{{ credit.produce_type }}</td>
                         <td>{{ credit.tonnage }}</td>
-                        <td>{{ credit.sales_agent_name }}</td>
+                        <td>{{ credit.sales_agent.id }}</td>
                         <td>
-                            <a href="{% url 'edit_credit' credit.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <a href="{% url 'delete_credit' credit.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this credit record?')">Delete</a>
+                            <a href="{% url 'view_credit' credit.id %}" class="btn btn-sm btn-outline-primary w-75 mb-1">View</a>
                         </td>
                     </tr>
                     {% empty %}

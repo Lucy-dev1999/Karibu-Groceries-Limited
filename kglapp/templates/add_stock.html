@@ -1,4 +1,3 @@
-<!-- inventory/templates/inventory/add_stock.html -->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
@@ -10,11 +9,43 @@
         <div class="card shadow">
             <div class="card-body">
                 <h2 class="card-title mb-4">Add New Stock</h2>
-                <form method="post">
+                
+                {% if messages %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form method="post" id="stockForm">
                     {% csrf_token %}
-                    {{ form|crispy }}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.name_of_produce|as_crispy_field }}
+                            {{ form.type_of_produce|as_crispy_field }}
+                            {{ form.tonnage|as_crispy_field }}
+                            {{ form.cost|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.name_of_dealer|as_crispy_field }}
+                            {{ form.contact|as_crispy_field }}
+                            {{ form.sell_price|as_crispy_field }}
+                        </div>
+                    </div>
                     <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">Add Stock</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Add Stock</button>
                         <a href="{% url 'all_stock' %}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </form>
@@ -22,4 +53,12 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('stockForm').addEventListener('submit', function(e) {
+    var submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+});
+</script>
 {% endblock %}

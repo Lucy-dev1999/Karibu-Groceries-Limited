@@ -27,8 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'kglapp.Userprofile'
-
+AUTH_USER_MODEL = 'kglapp.UserProfile'
 
 # Application definition
 
@@ -68,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'kglapp.context_processors.user_branch',  # Add this line
             ],
         },
     },
