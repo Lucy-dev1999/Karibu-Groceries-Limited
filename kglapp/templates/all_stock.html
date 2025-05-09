@@ -30,9 +30,22 @@
                     {% endif %}
                 {% endif %}
             </div>
-            {% if user.role == 'manager' %}
-                <a href="{% url 'add_stock' %}" class="btn btn-primary">Add New Stock</a>
-            {% endif %}
+            <div class="d-flex align-items-center gap-3">
+                <form class="d-flex" method="get">
+                    {% if current_branch %}
+                        <input type="hidden" name="branch" value="{{ current_branch }}">
+                    {% endif %}
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search stocks..." value="{{ search_query }}" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                {% if user.role == 'manager' %}
+                    <a href="{% url 'add_stock' %}" class="btn btn-primary">Add New Stock</a>
+                {% endif %}
+            </div>
         </div>
 
         <div class="table-responsive">

@@ -114,75 +114,9 @@
         </div>
     </div>
 
-    <!-- Quick Access Links -->
-    <div class="card mb-4">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Quick Access</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <!-- Stock Management -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Stock Management</h5>
-                            <div class="list-group">
-                                <a href="{% url 'all_stock' %}" class="list-group-item list-group-item-action">
-                                    View All Stock
-                                </a>
-                                <a href="{% url 'all_stock' %}?branch=Mattuga" class="list-group-item list-group-item-action">
-                                    Mattuga Stock
-                                </a>
-                                <a href="{% url 'all_stock' %}?branch=Maganjo" class="list-group-item list-group-item-action">
-                                    Maganjo Stock
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+   
 
-                <!-- Sales Management -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Sales Management</h5>
-                            <div class="list-group">
-                                <a href="{% url 'all_sales' %}" class="list-group-item list-group-item-action">
-                                    View All Sales
-                                </a>
-                                <a href="{% url 'all_sales' %}?branch=Mattuga" class="list-group-item list-group-item-action">
-                                    Mattuga Sales
-                                </a>
-                                <a href="{% url 'all_sales' %}?branch=Maganjo" class="list-group-item list-group-item-action">
-                                    Maganjo Sales
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Credit Management -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Credit Management</h5>
-                            <div class="list-group">
-                                <a href="{% url 'all_credits' %}" class="list-group-item list-group-item-action">
-                                    View All Credits
-                                </a>
-                                <a href="{% url 'all_credits' %}?branch=Mattuga" class="list-group-item list-group-item-action">
-                                    Mattuga Credits
-                                </a>
-                                <a href="{% url 'all_credits' %}?branch=Maganjo" class="list-group-item list-group-item-action">
-                                    Maganjo Credits
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+               
 
     <!-- Branch Management Sections -->
     {% for branch in branches %}
