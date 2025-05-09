@@ -88,6 +88,20 @@ class Stock(models.Model):
             print(f"Error calculating stock by item: {str(e)}")
             return {}
 
+    @classmethod
+    def search(cls, query=None, branch=None):
+        """Search stocks by name, type, or dealer name"""
+        queryset = cls.objects.all()
+        if branch:
+            queryset = queryset.filter(branch=branch)
+        if query:
+            queryset = queryset.filter(
+                models.Q(name_of_produce__icontains=query) |
+                models.Q(type_of_produce__icontains=query) |
+                models.Q(name_of_dealer__icontains=query)
+            )
+        return queryset
+
     def __str__(self):
         return f"{self.name_of_produce} - {self.tonnage}kg"
 
@@ -135,6 +149,19 @@ class Sale(models.Model):
             print(f"Error calculating sales by item: {str(e)}")
             return {}
 
+    @classmethod
+    def search(cls, query=None, branch=None):
+        """Search sales by produce name or buyer's name"""
+        queryset = cls.objects.all()
+        if branch:
+            queryset = queryset.filter(branch=branch)
+        if query:
+            queryset = queryset.filter(
+                models.Q(name_of_produce__icontains=query) |
+                models.Q(buyers_name__icontains=query)
+            )
+        return queryset
+
     def __str__(self):
         return f"{self.buyers_name} - {self.name_of_produce}"
 
@@ -177,6 +204,20 @@ class Credit(models.Model):
         except Exception as e:
             print(f"Error calculating credits by item: {str(e)}")
             return {}
+
+    @classmethod
+    def search(cls, query=None, branch=None):
+        """Search credits by produce name, type, or buyer's name"""
+        queryset = cls.objects.all()
+        if branch:
+            queryset = queryset.filter(branch=branch)
+        if query:
+            queryset = queryset.filter(
+                models.Q(produce_name__icontains=query) |
+                models.Q(produce_type__icontains=query) |
+                models.Q(buyers_name__icontains=query)
+            )
+        return queryset
 
     def __str__(self):
         return f"{self.buyers_name} - {self.amount_due}"

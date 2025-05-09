@@ -116,8 +116,8 @@
             color: var(--white);
         }
         .form-control, .form-select {
-            background-color: var(--black);
-            border-color: var(--white);
+            background-color: var(--white);
+            border-color: var(--black);
             color: var(--black);
         }
         .form-control:focus, .form-select:focus {
@@ -130,7 +130,7 @@
             color: var(--dark-gray);
         }
         label {
-            color: var(--black);
+            color: var(--black) !important;
         }
         .bg-primary {
             background-color: var(--maroon) !important;
@@ -157,18 +157,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
             <a class="navbar-brand btn btn-dark" href="{% url 'dashboard' %}">KGL STORE</a>
-            {% if user.is_authenticated %}
-                {% if user.role == 'director' %}
-                    <div class="btn-group ms-3">
-                        <a href="{% url 'dashboard' %}?branch=Mattuga" class="btn {% if user_branch == 'Mattuga' %}btn-primary{% else %}btn-outline-light{% endif %}">Mattuga</a>
-                        <a href="{% url 'dashboard' %}?branch=Maganjo" class="btn {% if user_branch == 'Maganjo' %}btn-success{% else %}btn-outline-light{% endif %}">Maganjo</a>
-                    </div>
-                {% elif user.role != 'sales_agent' %}
-                    <span class="navbar-text text-white ms-3">
-                        Branch: {% firstof user_branch request.user.branch %}
-                    </span>
-                {% endif %}
-            {% endif %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -185,12 +173,14 @@
         </div>
     </nav>
 
+
     <div class="main-content">
         <div class="container">
             <div class="mb-3">
                 <button onclick="history.back()" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Back
                 </button>
+                <br><br>
             {% bootstrap_messages %}
             {% block content %}
             {% endblock %}

@@ -270,17 +270,23 @@ def delete_stock(request, stock_id):
 @has_role(['manager', 'director'])
 def all_stock(request):
     branch = request.GET.get('branch')
+    search_query = request.GET.get('q', '')
+
     if request.user.role == 'manager':
         # For managers, ensure they can only see their assigned branch
-        stocks = Stock.objects.filter(branch=request.user.branch)
+        stocks = Stock.search(query=search_query, branch=request.user.branch)
         branch = request.user.branch
     elif request.user.role == 'director':
         # Directors can see all stock or filter by branch
         if branch in ['Mattuga', 'Maganjo']:
-            stocks = Stock.objects.filter(branch=branch)
+            stocks = Stock.search(query=search_query, branch=branch)
         else:
-            stocks = Stock.objects.all()
-    return render(request, 'all_stock.html', {'stocks': stocks, 'current_branch': branch})
+            stocks = Stock.search(query=search_query)
+    return render(request, 'all_stock.html', {
+        'stocks': stocks, 
+        'current_branch': branch,
+        'search_query': search_query
+    })
 
 @login_required
 @has_role(['manager', 'director'])
@@ -344,22 +350,20 @@ def delete_sale(request, sale_id):
 @has_role(['manager', 'sales_agent', 'director'])
 def all_sales(request):
     branch = request.GET.get('branch')
-    sort_by = request.GET.get('sort', '-date_of_sale')  # Default sort by date descending
+    sort_by = request.GET.get('sort', '-date_of_sale')
+    search_query = request.GET.get('q', '')
     
     if request.user.role == 'manager':
-        # Managers can only see their branch's sales
-        sales = Sale.objects.filter(branch=request.user.branch)
+        sales = Sale.search(query=search_query, branch=request.user.branch)
         branch = request.user.branch
     elif request.user.role == 'sales_agent':
-        # Sales agents can only see sales from their branch
-        sales = Sale.objects.filter(branch=request.user.branch)
+        sales = Sale.search(query=search_query, branch=request.user.branch)
         branch = request.user.branch
     else:
-        # Directors can see all sales or filter by branch
         if branch in ['Mattuga', 'Maganjo']:
-            sales = Sale.objects.filter(branch=branch)
+            sales = Sale.search(query=search_query, branch=branch)
         else:
-            sales = Sale.objects.all()
+            sales = Sale.search(query=search_query)
     
     # Apply sorting
     if sort_by.startswith('-'):
@@ -377,7 +381,8 @@ def all_sales(request):
         'sales': sales, 
         'current_branch': branch,
         'sort_by': sort_by,
-        'is_ascending': is_ascending
+        'is_ascending': is_ascending,
+        'search_query': search_query
     })
 
 @login_required
@@ -470,21 +475,24 @@ def delete_credit(request, credit_id):
 @has_role(['manager', 'sales_agent', 'director'])
 def all_credits(request):
     branch = request.GET.get('branch')
+    search_query = request.GET.get('q', '')
+    
     if request.user.role == 'manager':
-        # Managers can only see their branch's credits
-        credits = Credit.objects.filter(branch=request.user.branch)
+        credits = Credit.search(query=search_query, branch=request.user.branch)
         branch = request.user.branch
     elif request.user.role == 'sales_agent':
-        # Sales agents can only see credits from their branch
-        credits = Credit.objects.filter(branch=request.user.branch)
+        credits = Credit.search(query=search_query, branch=request.user.branch)
         branch = request.user.branch
     else:
-        # Directors can see all credits or filter by branch
         if branch in ['Mattuga', 'Maganjo']:
-            credits = Credit.objects.filter(branch=branch)
+            credits = Credit.search(query=search_query, branch=branch)
         else:
-            credits = Credit.objects.all()
-    return render(request, 'all_credits.html', {'credits': credits, 'current_branch': branch})
+            credits = Credit.search(query=search_query)
+    return render(request, 'all_credits.html', {
+        'credits': credits, 
+        'current_branch': branch,
+        'search_query': search_query
+    })
 
 @login_required
 @has_role(['manager', 'sales_agent', 'director'])
