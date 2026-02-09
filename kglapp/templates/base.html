@@ -11,24 +11,32 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --maroon: #800000;
-            --cream: #FFFDD0;
-            --dark-gray: #333333;
+            {% if branch_colors %}
+            --light-green: {{ branch_colors.primary }};
+            --soft-green: {{ branch_colors.secondary }};
+            --mint-green: {{ branch_colors.accent }};
+            {% else %}
+            --light-green: #00A859;
+            --soft-green: #00C96B;
+            --mint-green: #B3E5D1;
+            {% endif %}
             --black: #000000;
             --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --sidebar-width: 250px;
         }
 
         html {
-            overflow: hidden;
             height: 100%;
         }
         body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: auto;
-            background-color: var(--cream);
+            background-color: var(--light-gray);
             color: var(--black);
+            display: flex;
+            flex-direction: column;
         }
         .navbar {
             position: fixed;
@@ -36,110 +44,199 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background-color: var(--maroon) !important;
+            background-color: var(--black) !important;
         }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - 56px - 60px);
+            background-color: var(--black);
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        .sidebar-link {
+            display: block;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            background-color: var(--light-green);
+            color: var(--white);
+            border-left-color: var(--soft-green);
+        }
+        .sidebar-link.active {
+            background-color: var(--light-green);
+            border-left-color: var(--white);
+        }
+        .sidebar-link i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .sidebar-section {
+            padding: 10px 20px;
+            color: var(--mint-green);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Toggle Button */
+        .sidebar-toggle {
+            position: fixed;
+            top: 70px;
+            left: calc(var(--sidebar-width) + 10px);
+            z-index: 200;
+            background-color: var(--light-green) !important;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: var(--white) !important;
+            cursor: pointer;
+            transition: left 0.3s ease;
+        }
+        .sidebar-toggle.shifted {
+            left: 10px;
+        }
+        
+        /* Main Content with Sidebar */
         .main-content {
+            margin-left: var(--sidebar-width);
             padding-top: 80px;
             padding-bottom: 100px;
-            min-height: calc(100vh - 60px);
-            background-color: var(--cream);
+            min-height: calc(100vh - 140px);
+            height: calc(100vh - 56px);
+            background-color: var(--white);
             color: var(--black);
+            overflow-y: auto;
+            overflow-x: auto;
+            transition: margin-left 0.3s ease;
+            flex: 1;
         }
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
         .footer {
             position: fixed;
             bottom: 0;
-            left: 0;
+            left: var(--sidebar-width);
             right: 0;
-            z-index: 1000;
-            background-color: var(--dark-gray) !important;
+            z-index: 500;
+            background-color: var(--black) !important;
+            transition: left 0.3s ease;
         }
+        .footer.expanded {
+            left: 0;
+        }
+        
         .container {
             position: relative;
             z-index: 1;
         }
+        .container-fluid {
+            position: relative;
+            z-index: 1;
+        }
         .card {
-            border-color: var(--dark-gray);
+            border-color: var(--light-green);
             background-color: var(--white);
             color: var(--black);
+            box-shadow: 0 2px 4px rgba(0, 168, 89, 0.1);
         }
         .card-header {
-            background-color: var(--maroon) !important;
+            background-color: var(--light-green) !important;
             color: var(--white);
+            font-weight: 600;
         }
         .btn-primary {
-            background-color: var(--black) !important;
-            border-color: var(--black) !important;
+            background-color: var(--light-green) !important;
+            border-color: var(--light-green) !important;
             color: var(--white) !important;
             font-weight: 600;
         }
         .btn-primary:hover {
-            background-color: var(--dark-gray) !important;
-            border-color: var(--black) !important;
+            background-color: var(--soft-green) !important;
+            border-color: var(--soft-green) !important;
         }
         .btn-outline-primary {
             color: var(--black) !important;
-            border-color: var(--black) !important;
+            border-color: var(--light-green) !important;
         }
         .btn-outline-primary:hover {
             color: var(--white) !important;
-            background-color: var(--black) !important;
+            background-color: var(--light-green) !important;
         }
         .btn-dark {
-            background-color: var(--dark-gray) !important;
+            background-color: var(--black) !important;
             border-color: var(--black) !important;
             color: var(--white) !important;
         }
         .btn-dark:hover {
-            background-color: var(--black) !important;
+            background-color: #333333 !important;
         }
         .navbar-brand.btn-dark {
-            background-color: var(--black) !important;
+            background-color: var(--light-green) !important;
+            color: var(--white) !important;
+            font-weight: bold;
         }
         .navbar-brand.btn-dark:hover {
-            background-color: var(--dark-gray) !important;
+            background-color: var(--soft-green) !important;
         }
         .table {
             color: var(--black) !important;
             background-color: var(--white) !important;
         }
         .table-dark {
-            background-color: var(--dark-gray) !important;
+            background-color: var(--mint-green) !important;
+            color: var(--black) !important;
         }
         .table-hover tbody tr:hover {
-            background-color: var(--white) !important;
-            color: var(--white) !important;
+            background-color: var(--mint-green) !important;
+            color: var(--black) !important;
         }
-
         .alert {
-            background-color: var(--dark-gray);
-            border-color: var(--black);
-            color: var(--white);
+            background-color: var(--mint-green);
+            border-color: var(--light-green);
+            color: var(--black);
         }
         .form-control, .form-select {
             background-color: var(--white);
-            border-color: var(--black);
+            border-color: var(--light-green);
             color: var(--black);
         }
         .form-control:focus, .form-select:focus {
             background-color: var(--white);
-            border-color: var(--black);
+            border-color: var(--light-green);
             color: var(--black);
-            box-shadow: 0 0 0 0.25rem rgba(51, 51, 51, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(0, 168, 89, 0.25);
         }
         .form-control::placeholder {
-            color: var(--dark-gray);
+            color: #666666;
         }
         label {
             color: var(--black) !important;
         }
         .bg-primary {
-            background-color: var(--maroon) !important;
+            background-color: var(--light-green) !important;
         }
         .bg-success {
-            background-color: var(--dark-gray) !important;
+            background-color: var(--soft-green) !important;
         }
         .bg-dark {
-            background-color: var(--dark-gray) !important;
+            background-color: var(--black) !important;
         }
         .btn-outline-light:hover {
             color: var(--black) !important;
@@ -151,47 +248,158 @@
         .navbar-dark .navbar-brand {
             color: var(--white) !important;
         }
+        .btn-secondary {
+            background-color: var(--soft-green) !important;
+            border-color: var(--soft-green) !important;
+            color: var(--white) !important;
+        }
+        .btn-secondary:hover {
+            background-color: var(--light-green) !important;
+            border-color: var(--light-green) !important;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .footer {
+                left: 0;
+            }
+            .sidebar-toggle {
+                left: 10px !important;
+            }
+            .sidebar-toggle.shifted {
+                left: 10px !important;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand btn btn-dark" href="{% url 'dashboard' %}">KGL STORE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-dark ms-2">Logout</button>
-                            </form>
-                        </li>
+                    <li class="nav-item">
+                        <span class="navbar-text me-3">
+                            <i class="bi bi-person-circle"></i> {{ user.username }}
+                            {% if current_branch %}
+                                <span class="badge bg-success ms-2">{{ current_branch }}</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark ms-2">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
 
-    <div class="main-content">
-        <div class="container">
-            <div class="mb-3">
-                <button onclick="history.back()" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Back
-                </button>
-                <br><br>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-section">Navigation</div>
+        <a href="{% url 'dashboard' %}" class="sidebar-link">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        
+        {% if user_role == 'manager' or user_role == 'director' %}
+        <div class="sidebar-section">Stock Management</div>
+        <a href="{% url 'all_stock' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-box-seam"></i> View Stock
+        </a>
+        <a href="{% url 'add_stock' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-plus-circle"></i> Add Stock
+        </a>
+        {% endif %}
+        
+        <div class="sidebar-section">Sales</div>
+        <a href="{% url 'all_sales' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-cart-check"></i> View Sales
+        </a>
+        <a href="{% url 'add_sale' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-plus-circle"></i> Add Sale
+        </a>
+        
+        <div class="sidebar-section">Credits</div>
+        <a href="{% url 'all_credits' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-credit-card"></i> View Credits
+        </a>
+        <a href="{% url 'add_credit' %}{% if current_branch and user_role == 'director' %}?branch={{ current_branch }}{% endif %}" class="sidebar-link">
+            <i class="bi bi-plus-circle"></i> Add Credit
+        </a>
+        
+        {% if user_role == 'director' %}
+        <div class="sidebar-section">Branch Selection</div>
+        <a href="{% url 'dashboard' %}?branch=Mattuga" class="sidebar-link">
+            <i class="bi bi-building"></i> Mattuga
+        </a>
+        <a href="{% url 'dashboard' %}?branch=Maganjo" class="sidebar-link">
+            <i class="bi bi-building"></i> Maganjo
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="container-fluid">
             {% bootstrap_messages %}
             {% block content %}
             {% endblock %}
         </div>
     </div>
 
-    <footer class="footer py-3 bg-dark text-white">
+    <footer class="footer py-3 bg-dark text-white" id="footer">
         <div class="container text-center">
             <p class="mb-0">Developed and created by Ainembabazi Lucia Rachel</p>
             <p class="mb-0">&copy; {% now "Y" %} LUCIA. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const footer = document.getElementById('footer');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            footer.classList.toggle('expanded');
+            toggleBtn.classList.toggle('shifted');
+        }
+        
+        // Highlight active link
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const links = document.querySelectorAll('.sidebar-link');
+            
+            links.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath.includes(link.getAttribute('href')) && link.getAttribute('href') !== '/')) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
