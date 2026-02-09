@@ -4,109 +4,61 @@
 {% block title %}Director Dashboard - KGL{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <!-- Combined Statistics Overview -->
-    <div class="card mb-4">
-        <div class="card-header bg-dark text-white">
-            <h4 class="mb-0">Total Business Overview</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Total Stock</h5>
-                            <h2 class="display-4">{{ branch_stats.total_stock|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Combined stock across branches</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-success text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Total Sales</h5>
-                            <h2 class="display-4">{{ branch_stats.total_sales|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Combined sales across branches</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-warning text-dark">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Total Credits</h5>
-                            <h2 class="display-4">{{ branch_stats.total_credits|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Combined credits across branches</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Branch-wise Statistics -->
+<div class="container-fluid mt-4">
     <div class="row mb-4">
-        <!-- Mattuga Branch Stats -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Mattuga Branch Statistics</h5>
-                </div>
+        <div class="col-12">
+            <h2 class="fw-bold"><i class="bi bi-graph-up"></i> Director Dashboard</h2>
+            <p class="text-muted">Complete business overview across all branches</p>
+        </div>
+    </div>
+
+    <!-- Total Overview Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <div class="list-group">
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Current Stock</h6>
-                                <small class="text-muted">Total available stock</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Mattuga.stock|floatformat:2 }} KGS</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small text-uppercase">Total Stock</p>
+                            <h2 class="mb-0 fw-bold">{{ branch_stats.total_stock|floatformat:2 }}</h2>
+                            <small class="text-muted">KGS across all branches</small>
                         </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Total Sales</h6>
-                                <small class="text-muted">All time sales volume</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Mattuga.sales|floatformat:2 }} KGS</h4>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Outstanding Credits</h6>
-                                <small class="text-muted">Total credit volume</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Mattuga.credits|floatformat:2 }} KGS</h4>
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-box-seam fs-1 text-success"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Maganjo Branch Stats -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h5 class="card-title mb-0">Maganjo Branch Statistics</h5>
-                </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <div class="list-group">
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Current Stock</h6>
-                                <small class="text-muted">Total available stock</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Maganjo.stock|floatformat:2 }} KGS</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small text-uppercase">Total Sales</p>
+                            <h2 class="mb-0 fw-bold">{{ branch_stats.total_sales|floatformat:2 }}</h2>
+                            <small class="text-muted">KGS sold overall</small>
                         </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Total Sales</h6>
-                                <small class="text-muted">All time sales volume</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Maganjo.sales|floatformat:2 }} KGS</h4>
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-cart-check fs-1 text-success"></i>
                         </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-0">Outstanding Credits</h6>
-                                <small class="text-muted">Total credit volume</small>
-                            </div>
-                            <h4 class="mb-0">{{ branch_stats.Maganjo.credits|floatformat:2 }} KGS</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small text-uppercase">Total Credits</p>
+                            <h2 class="mb-0 fw-bold">{{ branch_stats.total_credits|floatformat:2 }}</h2>
+                            <small class="text-muted">KGS on credit</small>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-credit-card fs-1 text-warning"></i>
                         </div>
                     </div>
                 </div>
@@ -114,59 +66,121 @@
         </div>
     </div>
 
-   
-
-               
-
-    <!-- Branch Management Sections -->
-    {% for branch in branches %}
-    <div class="mb-5">
-        <div class="card">
-            <div class="card-header {% if branch == 'Mattuga' %}bg-primary{% else %}bg-success{% endif %} text-white">
-                <h4 class="mb-0">{{ branch }} Branch Management</h4>
+    <!-- Branch Comparison -->
+    <div class="row mb-4">
+        <!-- Mattuga Branch -->
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-success text-white border-0">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-building"></i> Mattuga Branch</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <div>
+                                    <small class="text-muted d-block">Current Stock</small>
+                                    <h4 class="mb-0 fw-bold">{{ branch_stats.Mattuga.stock|floatformat:2 }} <small class="text-muted">KGS</small></h4>
+                                </div>
+                                <i class="bi bi-box-seam fs-2 text-success"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-success bg-opacity-10 rounded">
+                                <small class="text-muted d-block">Sales</small>
+                                <h5 class="mb-0 fw-bold text-success">{{ branch_stats.Mattuga.sales|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-warning bg-opacity-10 rounded">
+                                <small class="text-muted d-block">Credits</small>
+                                <h5 class="mb-0 fw-bold text-warning">{{ branch_stats.Mattuga.credits|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'dashboard' %}?branch=Mattuga" class="btn btn-success w-100">
+                            <i class="bi bi-arrow-right-circle"></i> View Mattuga Dashboard
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <!-- Stock Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Stock Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_stock' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Stock</a>
-                                    
+        </div>
+
+        <!-- Maganjo Branch -->
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-dark text-white border-0">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-building"></i> Maganjo Branch</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <div>
+                                    <small class="text-muted d-block">Current Stock</small>
+                                    <h4 class="mb-0 fw-bold">{{ branch_stats.Maganjo.stock|floatformat:2 }} <small class="text-muted">KGS</small></h4>
                                 </div>
+                                <i class="bi bi-box-seam fs-2 text-dark"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-success bg-opacity-10 rounded">
+                                <small class="text-muted d-block">Sales</small>
+                                <h5 class="mb-0 fw-bold text-success">{{ branch_stats.Maganjo.sales|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-warning bg-opacity-10 rounded">
+                                <small class="text-muted d-block">Credits</small>
+                                <h5 class="mb-0 fw-bold text-warning">{{ branch_stats.Maganjo.credits|floatformat:0 }}</h5>
                             </div>
                         </div>
                     </div>
-                    <!-- Sales Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Sales Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_sales' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Sales</a>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Credit Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Credit Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_credits' %}?branch={{ branch }}" class="btn btn-outline-primary mb-2">View Credits</a>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mt-3">
+                        <a href="{% url 'dashboard' %}?branch=Maganjo" class="btn btn-dark w-100">
+                            <i class="bi bi-arrow-right-circle"></i> View Maganjo Dashboard
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
+
+    <!-- Quick Access -->
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5 class="fw-bold"><i class="bi bi-lightning-charge"></i> Quick Access</h5>
+        </div>
+        {% for branch in branches %}
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">{{ branch }} Branch Management</h6>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <a href="{% url 'all_stock' %}?branch={{ branch }}" class="btn btn-outline-success w-100 py-3">
+                                <i class="bi bi-box-seam d-block mb-1"></i>
+                                <small>Stock</small>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="{% url 'all_sales' %}?branch={{ branch }}" class="btn btn-outline-success w-100 py-3">
+                                <i class="bi bi-cart-check d-block mb-1"></i>
+                                <small>Sales</small>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="{% url 'all_credits' %}?branch={{ branch }}" class="btn btn-outline-warning w-100 py-3">
+                                <i class="bi bi-credit-card d-block mb-1"></i>
+                                <small>Credits</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

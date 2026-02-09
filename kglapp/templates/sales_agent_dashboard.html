@@ -4,117 +4,198 @@
 {% block title %}Sales Agent Dashboard - KGL{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <!-- Branch Header -->
+<div class="container-fluid mt-4">
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <h2 class="card-title">{{ user_branch }} Branch</h2>
-                </div>
-            </div>
+            <h2 class="fw-bold"><i class="bi bi-person-badge"></i> Sales Agent Dashboard</h2>
+            <p class="text-muted">{{ user_branch }} Branch - {{ user.get_full_name|default:user.username }}</p>
         </div>
     </div>
 
-    <!-- Quick Stats -->
+    <!-- Performance Cards -->
     <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card h-100">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Recent Sales</h5>
-                    <h3 class="display-6 mb-0">{{ recent_sales_count }}</h3>
-                    <p class="text-muted">Last 7 days</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Recent Sales</p>
+                            <h2 class="mb-0 fw-bold">{{ recent_sales_count }}</h2>
+                            <small class="text-success"><i class="bi bi-arrow-up"></i> Last 7 days</small>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-cart-check fs-2 text-success"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card h-100">
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Active Credits</h5>
-                    <h3 class="display-6 mb-0">{{ active_credits_count }}</h3>
-                    <p class="text-muted">Pending payments</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Active Credits</p>
+                            <h2 class="mb-0 fw-bold">{{ active_credits_count }}</h2>
+                            <small class="text-warning"><i class="bi bi-clock"></i> Pending</small>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-credit-card fs-2 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Branch</p>
+                            <h2 class="mb-0 fw-bold">{{ user_branch }}</h2>
+                            <small class="text-dark"><i class="bi bi-building"></i> Location</small>
+                        </div>
+                        <div class="bg-dark bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-geo-alt fs-2 text-dark"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Activities</p>
+                            <h2 class="mb-0 fw-bold">{{ recent_activities|length }}</h2>
+                            <small class="text-dark"><i class="bi bi-activity"></i> Recent</small>
+                        </div>
+                        <div class="bg-dark bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-list-check fs-2 text-dark"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Management Cards -->
-    <div class="row">
-        <!-- Sales Management -->
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Sales Management</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        <a href="{% url 'add_sale' %}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-plus-circle"></i> Add New Sale
-                        </a>
-                        <a href="{% url 'all_sales' %}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-list"></i> View All Sales
-                        </a>
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12 mb-3">
+            <h5 class="fw-bold"><i class="bi bi-lightning-charge"></i> Quick Actions</h5>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <a href="{% url 'add_sale' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100 hover-lift">
+                    <div class="card-body text-center py-4">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-plus-circle fs-1 text-success"></i>
+                        </div>
+                        <h6 class="fw-bold mb-0">Add New Sale</h6>
+                        <small class="text-muted">Record a sale</small>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Credit Management -->
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="card-title mb-0">Credit Management</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        <a href="{% url 'add_credit' %}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-plus-circle"></i> Add New Credit
-                        </a>
-                        <a href="{% url 'all_credits' %}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-list"></i> View All Credits
-                        </a>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <a href="{% url 'all_sales' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100 hover-lift">
+                    <div class="card-body text-center py-4">
+                        <div class="bg-dark bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-list-ul fs-1 text-dark"></i>
+                        </div>
+                        <h6 class="fw-bold mb-0 text-dark">View All Sales</h6>
+                        <small class="text-muted">Sales history</small>
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <a href="{% url 'add_credit' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100 hover-lift">
+                    <div class="card-body text-center py-4">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-plus-circle fs-1 text-warning"></i>
+                        </div>
+                        <h6 class="fw-bold mb-0 text-dark">Add New Credit</h6>
+                        <small class="text-muted">Record credit</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <a href="{% url 'all_credits' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100 hover-lift">
+                    <div class="card-body text-center py-4">
+                        <div class="bg-dark bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-list-ul fs-1 text-dark"></i>
+                        </div>
+                        <h6 class="fw-bold mb-0 text-dark">View All Credits</h6>
+                        <small class="text-muted">Credit history</small>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
     <!-- Recent Activity -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Recent Activity</h5>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history"></i> Recent Activity</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Type</th>
-                                    <th>Details</th>
-                                    <th>Actions</th>
+                                    <th class="border-0">Date</th>
+                                    <th class="border-0">Type</th>
+                                    <th class="border-0">Details</th>
+                                    <th class="border-0 text-end">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for activity in recent_activities %}
-                                    <tr>
-                                        <td>{{ activity.date }}</td>
-                                        <td>{{ activity.type }}</td>
-                                        <td>{{ activity.details }}</td>
-                                        <td>
-                                            {% if activity.type == 'sale' %}
-                                                <a href="{% url 'view_sale' activity.id %}" class="btn btn-sm btn-outline-primary">View</a>
-                                            {% else %}
-                                                <a href="{% url 'view_credit' activity.id %}" class="btn btn-sm btn-outline-primary">View</a>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>
+                                        <small class="text-muted">{{ activity.date|date:"M d, Y" }}</small>
+                                    </td>
+                                    <td>
+                                        {% if activity.type == 'sale' %}
+                                        <span class="badge bg-success">Sale</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">Credit</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ activity.details }}</td>
+                                    <td class="text-end">
+                                        {% if activity.type == 'sale' %}
+                                        <a href="{% url 'view_sale' activity.id %}" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'view_credit' activity.id %}" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                                 {% empty %}
-                                    <tr>
-                                        <td colspan="4" class="text-center">No recent activity</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                        No recent activity
+                                    </td>
+                                </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -124,4 +205,14 @@
         </div>
     </div>
 </div>
+
+<style>
+.hover-lift {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+</style>
 {% endblock %}

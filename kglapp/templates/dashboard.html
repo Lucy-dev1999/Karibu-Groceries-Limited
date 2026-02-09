@@ -4,188 +4,147 @@
 {% block title %}Dashboard - KGL{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    {% if user.role == 'sales_agent' %}
-        <!-- Sales Agent Dashboard -->
-        <h2 class="mb-4">{{ user_branch }} Branch - Sales Agent Dashboard</h2>
-        <div class="row">
-            <!-- Sales Management -->
-            <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Sales Management</h5>
-                        <div class="d-grid gap-2">
-                            <a href="{% url 'all_sales' %}" class="btn btn-outline-primary mb-2">View Sales</a>
-                            <a href="{% url 'add_sale' %}" class="btn btn-primary">Add New Sale</a>
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold"><i class="bi bi-speedometer2"></i> {{ user_branch }} Branch Dashboard</h2>
+            <p class="text-muted">Welcome back, {{ user.get_full_name|default:user.username }}</p>
+        </div>
+    </div>
+
+    <!-- Branch Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1 small">Current Stock</p>
+                            <h3 class="mb-0 fw-bold">{{ branch_stats|floatformat:2 }}</h3>
+                            <small class="text-muted">KGS</small>
                         </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-box-seam fs-2 text-success"></i>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 5px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
                     </div>
                 </div>
             </div>
-            <!-- Credit Management -->
-            <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Credit Management</h5>
-                        <div class="d-grid gap-2">
-                            <a href="{% url 'all_credits' %}" class="btn btn-outline-primary mb-2">View Credits</a>
-                            <a href="{% url 'add_credit' %}" class="btn btn-primary">Add New Credit</a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1 small">Total Items</p>
+                            <h3 class="mb-0 fw-bold">{{ item_stats|length }}</h3>
+                            <small class="text-muted">Products</small>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-grid fs-2 text-success"></i>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 5px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1 small">Branch</p>
+                            <h3 class="mb-0 fw-bold">{{ user_branch }}</h3>
+                            <small class="text-muted">Location</small>
+                        </div>
+                        <div class="bg-dark bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-building fs-2 text-dark"></i>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 5px;">
+                        <div class="progress-bar bg-dark" role="progressbar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3"><i class="bi bi-lightning-charge"></i> Quick Actions</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <a href="{% url 'all_stock' %}" class="btn btn-outline-success w-100 py-3">
+                                <i class="bi bi-box-seam fs-4 d-block mb-2"></i>
+                                <span class="fw-semibold">View Stock</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{% url 'all_sales' %}" class="btn btn-outline-success w-100 py-3">
+                                <i class="bi bi-cart-check fs-4 d-block mb-2"></i>
+                                <span class="fw-semibold">View Sales</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{% url 'all_credits' %}" class="btn btn-outline-warning w-100 py-3">
+                                <i class="bi bi-credit-card fs-4 d-block mb-2"></i>
+                                <span class="fw-semibold">View Credits</span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    {% else %}
-        <!-- Branch Statistics -->
-        <div class="row">
-            {% if user.role == 'director' or user.is_superuser %}
-                <!-- Display all branches for directors -->
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-primary text-white h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Mattuga Branch</h5>
-                            <h2 class="card-text display-4">{{ branch_stats.Mattuga|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Total Stock</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-success text-white h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Maganjo Branch</h5>
-                            <h2 class="card-text display-4">{{ branch_stats.Maganjo|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Total Stock</p>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <!-- Display only user's branch for managers -->
-                <div class="col-md-12 mb-4">
-                    <div class="card {% if user_branch == 'Mattuga' %}bg-primary{% else %}bg-success{% endif %} text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ user_branch }} Branch</h5>
-                            <h2 class="card-text display-4">{{ branch_stats|floatformat:2 }} KGS</h2>
-                            <p class="card-text">Total Stock</p>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+    </div>
+
+    <!-- Item Statistics -->
+    {% if item_stats %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5 class="fw-bold"><i class="bi bi-bar-chart"></i> Inventory Overview</h5>
         </div>
-
-        <!-- Management Cards -->
-        {% if user.role == 'director' or user.is_superuser %}
-            <!-- Show all branches for directors -->
-            {% for branch in "Mattuga,Maganjo"|split:"," %}
-            <div class="mb-4">
-                <h3>{{ branch }} Branch Management</h3>
-                <div class="row">
-                    <!-- Stock Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Stock Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_stock' %}?branch={{ branch }}" class="btn btn-outline-primary">View Stock</a>
-                                </div>
-                            </div>
+        {% for item in item_stats %}
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">{{ item.name }}</h6>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Stock</small>
+                            <small class="fw-semibold">{{ item.current_stock|floatformat:2 }} KGS</small>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
                         </div>
                     </div>
-                    <!-- Sales Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Sales Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_sales' %}?branch={{ branch }}" class="btn btn-outline-primary">View Sales</a>
-                                </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="bg-success bg-opacity-10 p-2 rounded text-center">
+                                <small class="text-muted d-block">Sales</small>
+                                <strong class="text-success">{{ item.total_sales|floatformat:0 }}</strong>
                             </div>
                         </div>
-                    </div>
-                    <!-- Credit Management -->
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Credit Management</h5>
-                                <div class="d-grid gap-2">
-                                    <a href="{% url 'all_credits' %}?branch={{ branch }}" class="btn btn-outline-primary">View Credits</a>                               
-                                </div>
+                        <div class="col-6">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded text-center">
+                                <small class="text-muted d-block">Credits</small>
+                                <strong class="text-warning">{{ item.total_credits|floatformat:0 }}</strong>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-            <!-- Show only user's branch for managers -->
-            <div class="row">
-                <!-- Stock Management -->
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Stock Management</h5>
-                            <div class="d-grid gap-2">
-                                <a href="{% url 'all_stock' %}" class="btn btn-outline-primary">View Stock</a>                           
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Sales Management -->
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Sales Management</h5>
-                            <div class="d-grid gap-2">
-                                <a href="{% url 'all_sales' %}" class="btn btn-outline-primary">View Sales</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Credit Management -->
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Credit Management</h5>
-                            <div class="d-grid gap-2">
-                                <a href="{% url 'all_credits' %}" class="btn btn-outline-primary">View Credits</a>                           
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if user.role == 'manager' %}
-            <!-- Item Statistics -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <h3>Item Statistics</h3>
-                </div>
-                {% for item in item_stats %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">{{ item.name }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Current Stock
-                                    <span class="badge bg-primary rounded-pill">{{ item.current_stock|floatformat:2 }} KGS</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Total Sales
-                                    <span class="badge bg-success rounded-pill">{{ item.total_sales|floatformat:2 }} KGS</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Total Credits
-                                    <span class="badge bg-warning rounded-pill">{{ item.total_credits|floatformat:2 }} KGS</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+        </div>
+        {% endfor %}
+    </div>
     {% endif %}
 </div>
 {% endblock %}
